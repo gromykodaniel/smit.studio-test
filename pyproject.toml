@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "testovoe1"
+version = "0.1.0"
+description = ""
+authors = ["Danil <gromykodaniel@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.5"
+uvicorn = "^0.32.0"
+passlib = "^1.7.4"
+asyncpg = "^0.30.0"
+sqlalchemy = "^2.0.36"
+alembic = "^1.14.0"
+pydantic-settings = "^2.6.1"
+pydantic = "^2.9.2"
+aiohttp = "^3.11.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
