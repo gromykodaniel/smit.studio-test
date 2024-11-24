@@ -8,7 +8,7 @@ router = APIRouter(prefix="/rates", tags=["rates"])
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import models, schemas
-from .kafka_file import send_to_kafka
+
 
 
 @router.post("/tariffs/", response_model=schemas.TariffResponse)
@@ -83,8 +83,4 @@ async def calculate_insurance(
     if insurance_cost == 0.0:
         raise HTTPException(status_code=404, detail="Tariff not found for the given cargo type and date")
 
-    return schemas.InsuranceResponse(
-        cargo_type=insurance_request.cargo_type,
-        declared_value=insurance_request.declared_value,
-        insurance_cost=insurance_cost
-    )
+    return insurance_request * insurance_cost
