@@ -1,39 +1,39 @@
-import datetime
 
-from pydantic import BaseModel, Extra, Field
+from pydantic import BaseModel , Field
+from datetime import date
+from typing import List
 
 
-from pydantic import BaseModel, Field
-from typing import List, Dict
+class TariffCreate(BaseModel):
+    cargo_type: str = Field(..., description="Тип груза")
+    rate: float = Field(..., ge=0, description="Тариф за единицу груза")
+    effective_date: date = Field(..., description="Дата вступления тарифа в силу")
 
-class RateItem(BaseModel):
-    cargo_type: str = Field(..., )
-    rate: float = Field(..., ge=0)
 
-class Rates(BaseModel):
-    __root__: Dict[str, List[RateItem]]
+class TariffUpdate(BaseModel):
+    cargo_type: str = Field(..., description="Тип груза", min_length=1)
+    rate: float = Field(..., ge=0, description="Тариф за единицу груза")
+    effective_date: date = Field(..., description="Дата вступления тарифа в силу")
+
+
+class TariffResponse(TariffCreate):
+    id: int
 
     class Config:
-        schema_extra = {
-            "example": {
-                "2020-01-01": [
-                    {"cargo_type": "glass", "rate": 0.06},
-                    {"cargo_type": "other", "rate": 0.01},
-                ],
-                "2020-07-01": [
-                    {"cargo_type": "glass", "rate": 0.035},
-                    {"cargo_type": "other", "rate": 0.015},
-                ],
-            }
-        }
+        orm_mode = True
+
+
+class TariffsByDateResponse(BaseModel):
+    tariffs_by_date: dict[date, List[TariffCreate]]
+
+    class Config:
+        orm_mode = True
+
+
+class TariffsByDateCreate(BaseModel):
+    tariffs_by_date: dict[date, List[TariffCreate]]
 
 
 
-
-
-class TariffRateInsert(BaseModel, extra=Extra.allow):
-    pass
-
-
-class TariffRateDate(BaseModel):
-    date: datetime.date = Field(description="Дата")
+    class Config:
+        orm_mode = True
